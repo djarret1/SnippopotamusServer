@@ -1,5 +1,6 @@
 import zmq
 import json
+from model import constants
 
 def runClient():
     #  Prepare our context and sockets
@@ -8,30 +9,27 @@ def runClient():
     print("connecting to server...")
     socket.connect("tcp://127.0.0.1:5555")
     
-    #  Do 10 requests, waiting each time for a response
-    for request in range(1,6):
-        print("sending message...")
-        message = {'content': 'Hello'}
-        json_message = json.dumps(message)
-        socket.send_string(json_message)
-        json_response = socket.recv_string()
-        response = json.loads(json_response)
-        print("Received reply %s [%s]" % (request, response))
+    name = input('Name: ')
+    desc = input('Description: ')
+    code = input('Code: ')
+    tags = []
+    count = int(input('How many tags: '))
+    for i in range(0, count):
+        tag = input('Enter tag: ')
+        tags.append(tag)
+        
+    message = {constants.MSG_ID: constants.COMMAND_ADD,
+               constants.MSG_NAME: name,
+               constants.MSG_DESC: desc,
+               constants.MSG_CODE: code,
+               constants.MSG_TAGS: tags}
     
-    data = ''
-    while data != 'exit':
-        data = input('Enter something: ')
-        message = {'content': data}
-        json_message = json.dumps(message)
-        socket.send_string(json_message)
-        json_response = socket.recv_string()
-        response = json.loads(json_response)
-        print('Received: %s' % response)
-    
-    print("sending exit message...")
-    message = {'content': 'exit'}
     json_message = json.dumps(message)
     socket.send_string(json_message)
+    json_response = socket.recv_string()
+    response = json.loads(json_response)
+       
+    print(response)
         
 if(__name__ == "__main__"):
    runClient()

@@ -1,6 +1,6 @@
 from threading import Thread
 import time
-from model.server import runServer
+from server.server import runServer
 from model.client import runClient
 
 def main():
