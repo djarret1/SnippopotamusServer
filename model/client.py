@@ -18,7 +18,7 @@ def runClient():
         tag = input('Enter tag: ')
         tags.append(tag)
         
-    message = {constants.MSG_ID: constants.COMMAND_ADD,
+    message = {constants.MSG_ID: 'test',#constants.COMMAND_ADD,
                constants.MSG_NAME: name,
                constants.MSG_DESC: desc,
                constants.MSG_CODE: code,

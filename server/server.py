@@ -2,7 +2,7 @@ import zmq
 import time
 import json
 from model import constants
-from model.code_snippet import code_snippet
+from model.code_snippet import Code_Snippet
 
 def runServer():
     context = zmq.Context()
@@ -16,12 +16,13 @@ def runServer():
             json_message = socket.recv_string()
             message = json.loads(json_message)
             print("Received request: %s" % message[constants.MSG_ID])
-        
+            
+            #time.sleep(1)
+            
             response = dispatch_message(message)
             json_message = json.dumps(response)
             socket.send_string(json_message)
-        
-            #time.sleep(0.1)
+
     except KeyError as e:
         print(e)
         
@@ -29,15 +30,13 @@ def dispatch_message(message):
     try:
         if message['id'] == constants.COMMAND_ADD:
             return add_snippet(message)
+        return {constants.RESPONSE: constants.FAIL}
     except KeyError as badKey:
         return {constants.RESPONSE, 'Bad key: %s' % (badKey.message)}
 
-if(__name__ == "__main__"):
-    runServer()
-   
 def add_snippet(message):
-    snippet = code_snippet(message)
+    snippet = Code_Snippet(message)
     return {constants.RESPONSE: constants.SUCCESS}
     
-    
-    
+if(__name__ == "__main__"):
+    runServer()

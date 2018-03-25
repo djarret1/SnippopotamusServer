@@ -5,7 +5,7 @@ Created on Mar 24, 2018
 '''
 from model import constants
 
-class code_snippet:
+class Code_Snippet:
     '''
     classdocs
     '''

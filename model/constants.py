@@ -11,6 +11,7 @@ MSG_TAGS = 'tags'
 
 MALFORMED_SNIPPET = 'malformed_snippet'
 SUCCESS = 'success'
+FAIL = 'fail'
 UNKNOWN_MESSAGE = 'unknown_message'
 RESPONSE = 'RESP'
 
