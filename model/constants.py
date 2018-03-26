@@ -27,3 +27,4 @@ SNIPPET_EXISTS = 'snippet_exists'
 
 COMMAND_ADD = 'add'
 COMMAND_NEW_USER = 'new_user'
+COMMAND_TERMINATE = 'terminate'

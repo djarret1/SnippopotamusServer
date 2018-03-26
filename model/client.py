@@ -1,3 +1,4 @@
+import time
 import zmq
 import json
 from model import constants
@@ -29,6 +30,16 @@ def runClient():
 
 #     message = {constants.MSG_ID: constants.COMMAND_NEW_USER,
 #                constants.MSG_USER_NAME: 'newguy'}
+    
+    json_message = json.dumps(message)
+    socket.send_string(json_message)
+    json_response = socket.recv_string()
+    response = json.loads(json_response)
+    
+    print(response)
+    
+    time.sleep(2)
+    message = {constants.MSG_ID: constants.COMMAND_TERMINATE, constants.MSG_USER_NAME: user_Id}
     
     json_message = json.dumps(message)
     socket.send_string(json_message)

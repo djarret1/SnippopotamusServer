@@ -72,7 +72,8 @@ class Server:
                 outputFile.write(output_line + '\n')
     
     def main_loop(self):
-        while True:
+        result = ''
+        while result != constants.COMMAND_TERMINATE:
             #  Wait for next request from client
             print("waiting for message...")
             json_message = self._socket.recv_string()
@@ -84,7 +85,7 @@ class Server:
                 if not self.validate_user(message) and message[constants.MSG_ID] != constants.COMMAND_NEW_USER:
                     self.send_response(constants.INVALID_USER)
                 else:
-                    self.process_message(message)
+                    result = self.process_message(message)
             except KeyError as e:
                 self.send_response(constants.MISSING_KEY + ': ' + str(e))
         
@@ -93,14 +94,18 @@ class Server:
             response = self.dispatch_message(message)
             json_message = json.dumps(response)
             self._socket.send_string(json_message)
+            return response
         except KeyError as e:
             self.send_response(str(e))
+            return response
 
     def dispatch_message(self, message):
         if message[constants.MSG_ID] == constants.COMMAND_ADD:
             return self.add_snippet(message)
         if message[constants.MSG_ID] == constants.COMMAND_NEW_USER:
             return self.add_user(message)
+        if message[constants.MSG_ID] == constants.COMMAND_TERMINATE:
+            return constants.COMMAND_TERMINATE
         return self.send_response(constants.UNKNOWN_ID + ': ' + message[constants.MSG_ID])
 
     def add_snippet(self, message):
