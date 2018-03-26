@@ -11,6 +11,9 @@ MSG_DESC = 'description'
 MSG_CODE = 'code'
 MSG_TAGS = 'tags'
 
+NEW_TAG = 'new_tag'
+TAG_TO_DELETE = 'tag_to_delete'
+
 MSG_NEEDS_APPROVAL = 'needs_approval'
 
 RESPONSE = 'resp'
@@ -24,7 +27,11 @@ USER_EXISTS = 'user_exists'
 
 USR_ADMIN = 'admin'
 SNIPPET_EXISTS = 'snippet_exists'
+SNIPPET_DOESNT_EXIT = 'snippet_doesnt_exist'
 
 COMMAND_ADD = 'add'
+COMMAND_DUMP = 'dump'
 COMMAND_NEW_USER = 'new_user'
 COMMAND_TERMINATE = 'terminate'
+COMMAND_TAG_SNIPPET = 'tag_snippet'
+COMMAND_UNTAG_SNIPPET = 'untag_snippet'

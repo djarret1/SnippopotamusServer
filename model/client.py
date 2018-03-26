@@ -12,24 +12,29 @@ def runClient():
     print("connecting to server...")
     socket.connect("tcp://127.0.0.1:5555")
     
-    name = input('Name: ')
-    desc = input('Description: ')
-    code = input('Code: ')
-    tags = []
-    count = int(input('How many tags: '))
-    for i in range(0, count):
-        tag = input('Enter tag: ')
-        tags.append(tag)
-          
-    message = {constants.MSG_ID: constants.COMMAND_ADD,
-               constants.MSG_USER_NAME: user_Id,
-               constants.MSG_NAME: name,
-               constants.MSG_DESC: desc,
-               constants.MSG_CODE: code,
-               constants.MSG_TAGS: tags}
-
+#     name = input('Name: ')
+#     desc = input('Description: ')
+#     code = input('Code: ')
+#     tags = []
+#     count = int(input('How many tags: '))
+#     for i in range(0, count):
+#         tag = input('Enter tag: ')
+#         tags.append(tag)
+#            
+#     message = {constants.MSG_ID: constants.COMMAND_ADD,
+#                constants.MSG_USER_NAME: user_Id,
+#                constants.MSG_NAME: name,
+#                constants.MSG_DESC: desc,
+#                constants.MSG_CODE: code,
+#                constants.MSG_TAGS: tags}
+ 
 #     message = {constants.MSG_ID: constants.COMMAND_NEW_USER,
 #                constants.MSG_USER_NAME: 'newguy'}
+    
+    message = {constants.MSG_ID: constants.COMMAND_DUMP,
+               constants.MSG_USER_NAME: user_Id}
+    
+    time.sleep(1)
     
     json_message = json.dumps(message)
     socket.send_string(json_message)

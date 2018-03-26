@@ -1,3 +1,2 @@
-admin,test,test,test,test1,needs_approval
-admin,Bubble Sort,Slow Sort,//code,slow_sort,beginner,needs_approval
-admin,Merge Sort,Faster Sort,//code,divide_conq,needs_approval
+admin,Bubble Sort,Slow,//code,slow_sort,beginner,Tagged Successfully
+admin,Merge Sort,Faster Sort,//code,faster_sorts,Good_Intermediate

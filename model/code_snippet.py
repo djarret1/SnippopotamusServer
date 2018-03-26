@@ -4,6 +4,11 @@ Created on Mar 24, 2018
 @author: jdk60
 '''
 from model import constants
+from json import JSONEncoder
+
+class Code_Snippet_Encoder(JSONEncoder):
+    def default(self, o):
+        return o.__dict__
 
 class Code_Snippet:
     '''
@@ -35,8 +40,8 @@ class Code_Snippet:
         if needs_approval:
             self._tags.append(constants.MSG_NEEDS_APPROVAL)
         
-        self.print_info()
-        
+        self.print_info()   
+    
     def print_info(self):
         print('Name: %s' % self._name)
         print('Description: %s' % self._description)
@@ -58,5 +63,17 @@ class Code_Snippet:
     
     def get_tags(self):
         return self._tags
+    
+    def add_tag(self, tag):
+        if tag not in self._tags:
+            self._tags.append(tag)
+        else:
+            raise ValueError('Tag already exists')
+    
+    def remove_tag(self, tag):
+        if tag in self._tags:
+            self._tags.remove(tag)
+        else:
+            raise ValueError('Tag not found: %s' % tag)
         
                   

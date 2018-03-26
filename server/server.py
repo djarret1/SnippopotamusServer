@@ -1,8 +1,10 @@
 import zmq
 import time
 import json
+import os
 from model import constants
 from model.code_snippet import Code_Snippet
+from model.code_snippet import Code_Snippet_Encoder
 
 user_file = '../server/users.txt'
 snippet_file = '../server/snippets.txt'
@@ -71,6 +73,11 @@ class Server:
             with open(snippet_file, 'w') as outputFile:
                 outputFile.write(output_line + '\n')
     
+    def store_all_snippets(self):
+        os.remove(snippet_file)
+        for k, v in self._code_snippets.items():
+            self.store_snippet(v)
+    
     def main_loop(self):
         result = ''
         while result != constants.COMMAND_TERMINATE:
@@ -93,20 +100,32 @@ class Server:
         try:
             response = self.dispatch_message(message)
             json_message = json.dumps(response)
-            self._socket.send_string(json_message)
+            if response != None:
+                self._socket.send_string(json_message)
             return response
         except KeyError as e:
             self.send_response(str(e))
             return response
 
     def dispatch_message(self, message):
-        if message[constants.MSG_ID] == constants.COMMAND_ADD:
-            return self.add_snippet(message)
-        if message[constants.MSG_ID] == constants.COMMAND_NEW_USER:
-            return self.add_user(message)
-        if message[constants.MSG_ID] == constants.COMMAND_TERMINATE:
-            return constants.COMMAND_TERMINATE
-        return self.send_response(constants.UNKNOWN_ID + ': ' + message[constants.MSG_ID])
+        try:
+            if message[constants.MSG_ID] == constants.COMMAND_DUMP:
+                return self.dump_all_snippets()
+            if message[constants.MSG_ID] == constants.COMMAND_ADD:
+                return self.add_snippet(message)
+            if message[constants.MSG_ID] == constants.COMMAND_NEW_USER:
+                return self.add_user(message)
+            if message[constants.MSG_ID] == constants.COMMAND_TAG_SNIPPET:
+                return self.tag_snippet(message)
+            if message[constants.MSG_ID] == constants.COMMAND_UNTAG_SNIPPET:
+                return self.untag_snippet(message)
+            if message[constants.MSG_ID] == constants.COMMAND_TERMINATE:
+                return constants.COMMAND_TERMINATE
+            return self.send_response(constants.UNKNOWN_ID + ': ' + message[constants.MSG_ID])
+        except KeyError as e:
+            return self.send_response(constants.MISSING_KEY + ': ' + str(e))
+        except Exception as e:
+            return self.send_response(str(e))
 
     def add_snippet(self, message):
         new_snippet = Code_Snippet(message)
@@ -133,6 +152,38 @@ class Server:
         if message[constants.MSG_USER_NAME] in self._users:
             return True
         return False
+    
+    def tag_snippet(self, message):
+        try:
+            tag = message[constants.NEW_TAG]
+            user_name = message[constants.MSG_USER_NAME]
+            snippet_name = message[constants.MSG_NAME]
+            snippet_handle = user_name + snippet_name
+            code_snippet = self._code_snippets[snippet_handle]
+            code_snippet.add_tag(tag)
+            self._code_snippets[snippet_handle] = code_snippet
+            self.store_all_snippets()
+            return {constants.RESPONSE: constants.SUCCESS}
+        except KeyError:
+            return {constants.RESPONSE: constants.SNIPPET_DOESNT_EXIT}
+        
+    def untag_snippet(self, message):
+        try:
+            tag = message[constants.TAG_TO_DELETE]
+            user_name = message[constants.MSG_USER_NAME]
+            snippet_name = message[constants.MSG_NAME]
+            snippet_handle = user_name + snippet_name
+            code_snippet = self._code_snippets[snippet_handle]
+            code_snippet.remove_tag(tag)
+            self._code_snippets[snippet_handle] = code_snippet
+            self.store_all_snippets()
+            return {constants.RESPONSE: constants.SUCCESS}
+        except KeyError:
+            return {constants.RESPONSE: constants.SNIPPET_DOESNT_EXIT}
+        
+    def dump_all_snippets(self):
+        all_snippets = json.dumps(self._code_snippets, cls=Code_Snippet_Encoder)
+        return {constants.RESPONSE: all_snippets}
 
 def runServer():
     server = Server()
