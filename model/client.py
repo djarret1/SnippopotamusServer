@@ -2,6 +2,8 @@ import zmq
 import json
 from model import constants
 
+user_Id = 'jdk600'
+
 def runClient():
     #  Prepare our context and sockets
     context = zmq.Context()
@@ -18,7 +20,8 @@ def runClient():
         tag = input('Enter tag: ')
         tags.append(tag)
         
-    message = {constants.MSG_ID: 'test',#constants.COMMAND_ADD,
+    message = {constants.MSG_ID: constants.COMMAND_ADD,
+               constants.MSG_USER_NAME: user_Id,
                constants.MSG_NAME: name,
                constants.MSG_DESC: desc,
                constants.MSG_CODE: code,
