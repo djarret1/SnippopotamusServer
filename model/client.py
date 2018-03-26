@@ -2,7 +2,7 @@ import zmq
 import json
 from model import constants
 
-user_Id = 'newguy'
+user_Id = 'admin'
 
 def runClient():
     #  Prepare our context and sockets

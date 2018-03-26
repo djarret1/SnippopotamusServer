@@ -1,0 +1,2 @@
+admin,Merge Sort,Fast Sort,//code,fast_sort,intermediate,needs_approval
+admin,Bubble Sort,Slow Sort,//code,slow_sort,beginner,needs_approval

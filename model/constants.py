@@ -22,5 +22,8 @@ INVALID_USER = 'invalid_user'
 VALID_USER = 'valid_user'
 USER_EXISTS = 'user_exists'
 
+USR_ADMIN = 'admin'
+SNIPPET_EXISTS = 'snippet_exists'
+
 COMMAND_ADD = 'add'
 COMMAND_NEW_USER = 'new_user'

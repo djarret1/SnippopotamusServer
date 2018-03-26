@@ -9,13 +9,14 @@ class Code_Snippet:
     '''
     classdocs
     '''
-    def __init__(self, message):
+    def __init__(self, message, needs_approval=True):
         '''
         Constructor
         '''
+        if not isinstance(message, dict):
+            raise ValueError('message must be a dictionary')
+        
         keys = message.keys()
-        if not constants.MSG_ID in keys:
-            raise KeyError(constants.MISSING_ID)
         if not constants.MSG_NAME in keys:
             raise KeyError(constants.MISSING_KEY + ': %s' % constants.MSG_NAME)
         if not constants.MSG_DESC in keys:
@@ -25,12 +26,15 @@ class Code_Snippet:
         if not constants.MSG_TAGS in keys:
             raise KeyError(constants.MISSING_KEY + ': %s' % constants.MSG_TAGS)
         
-        self._id = message[constants.MSG_ID]
         self._name = message[constants.MSG_NAME]
         self._description = message[constants.MSG_DESC]
         self._code = message[constants.MSG_CODE]
         self._tags = message[constants.MSG_TAGS]
-        self._tags.append(constants.MSG_NEEDS_APPROVAL)
+        self._user_name = message[constants.MSG_USER_NAME]
+        
+        if needs_approval:
+            self._tags.append(constants.MSG_NEEDS_APPROVAL)
+        
         self.print_info()
         
     def print_info(self):
@@ -39,5 +43,20 @@ class Code_Snippet:
         print('Code: %s' % self._code)
         for tag in self._tags:
             print('tag: %s' % tag)
+    
+    def get_name(self):
+        return self._name
+    
+    def get_user_name(self):
+        return self._user_name
+    
+    def get_description(self):
+        return self._description
+    
+    def get_code(self):
+        return self._code
+    
+    def get_tags(self):
+        return self._tags
         
                   
