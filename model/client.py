@@ -34,7 +34,7 @@ def runClient():
     message = {constants.MSG_ID: constants.COMMAND_DUMP,
                constants.MSG_USER_NAME: user_Id}
     
-    time.sleep(1)
+    time.sleep(0.5)
     
     json_message = json.dumps(message)
     socket.send_string(json_message)
@@ -43,7 +43,7 @@ def runClient():
     
     print(response)
     
-    time.sleep(2)
+    time.sleep(0.5)
     message = {constants.MSG_ID: constants.COMMAND_TERMINATE, constants.MSG_USER_NAME: user_Id}
     
     json_message = json.dumps(message)

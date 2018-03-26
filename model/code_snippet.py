@@ -38,16 +38,7 @@ class Code_Snippet:
         self._user_name = message[constants.MSG_USER_NAME]
         
         if needs_approval:
-            self._tags.append(constants.MSG_NEEDS_APPROVAL)
-        
-        self.print_info()   
-    
-    def print_info(self):
-        print('Name: %s' % self._name)
-        print('Description: %s' % self._description)
-        print('Code: %s' % self._code)
-        for tag in self._tags:
-            print('tag: %s' % tag)
+            self._tags.append(constants.MSG_NEEDS_APPROVAL)   
     
     def get_name(self):
         return self._name
