@@ -2,7 +2,7 @@ import zmq
 import json
 from model import constants
 
-user_Id = 'jdk600'
+user_Id = 'newguy'
 
 def runClient():
     #  Prepare our context and sockets
@@ -19,13 +19,16 @@ def runClient():
     for i in range(0, count):
         tag = input('Enter tag: ')
         tags.append(tag)
-        
+          
     message = {constants.MSG_ID: constants.COMMAND_ADD,
                constants.MSG_USER_NAME: user_Id,
                constants.MSG_NAME: name,
                constants.MSG_DESC: desc,
                constants.MSG_CODE: code,
                constants.MSG_TAGS: tags}
+
+#     message = {constants.MSG_ID: constants.COMMAND_NEW_USER,
+#                constants.MSG_USER_NAME: 'newguy'}
     
     json_message = json.dumps(message)
     socket.send_string(json_message)
