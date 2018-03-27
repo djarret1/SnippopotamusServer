@@ -41,7 +41,7 @@ class Test(unittest.TestCase):
         self._socket.send_string(json_message)
 
     def runServer(self, ip=ip_port):
-        return Server(ip, users_file=user_file, snippets_file=snippet_file).main_loop()
+        Server(ip, users_file=user_file, snippets_file=snippet_file).main_loop()
     
     def test_A_AddingASnippetToAnEmptyServer(self):
         snippet_name = 'test_snippet'
@@ -225,5 +225,6 @@ class Test(unittest.TestCase):
         self._socket.send_string(json_message)
         json_response = self._socket.recv_string()
         response = json.loads(json_response)
-        self.assertFalse(response[constants.RESPONSE] == constants.SNIPPET_DOESNT_EXIT)
+        print(response)
+        self.assertTrue(response[constants.RESPONSE] == 'unknown_id: do_stuff')
         
