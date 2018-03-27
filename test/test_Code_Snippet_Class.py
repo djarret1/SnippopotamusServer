@@ -6,7 +6,6 @@ Created on Mar 26, 2018
 import unittest
 from model.code_snippet import Code_Snippet
 import model.constants as constants
-from wheel.signatures import assertTrue
 from builtins import ValueError
 
 class Test(unittest.TestCase):
