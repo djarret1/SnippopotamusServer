@@ -118,6 +118,8 @@ class Server:
                 return self.tag_snippet(message)
             if message[constants.MSG_ID] == constants.COMMAND_UNTAG_SNIPPET:
                 return self.untag_snippet(message)
+            if message[constants.MSG_ID] == constants.COMMAND_UPDATE:
+                return self.update_snippet(message)
             if message[constants.MSG_ID] == constants.COMMAND_TERMINATE:
                 return constants.COMMAND_TERMINATE
             return self.send_response(constants.UNKNOWN_ID + ': ' + message[constants.MSG_ID])
@@ -143,6 +145,15 @@ class Server:
             output_file.write(message[constants.MSG_USER_NAME] + '\n')
             return {constants.RESPONSE: constants.SUCCESS}
 
+    def update_snippet(self, message):
+        new_snippet = Code_Snippet(message)
+        snippet_handle = new_snippet.get_user_name() + new_snippet.get_name() 
+        if (snippet_handle) not in self._code_snippets.keys():
+            return {constants.RESPONSE: constants.SNIPPET_DOESNT_EXIT}
+        self._code_snippets[snippet_handle] = new_snippet
+        self.store_all_snippets()
+        return {constants.RESPONSE: constants.SUCCESS}
+    
     def send_response(self, text):
         response = json.dumps( {constants.RESPONSE: text} )
         self._socket.send_string(response)
