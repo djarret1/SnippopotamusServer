@@ -5,7 +5,7 @@ Created on Mar 24, 2018
 '''
 
 '''
-Messages sent to the server are sent in the form of a dictionary.
+Messages sent to the server are sent in the form of a dictionary that has been JSON serialized.
 
 ---------Every message sent to the server must include:
  a MSG_ID key, followed by a value representing the command.
