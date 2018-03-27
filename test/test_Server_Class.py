@@ -11,9 +11,7 @@ import os
 import zmq
 import time
 import json
-from shutil import copyfile
-from email import message
-from model.constants import COMMAND_DUMP
+from distutils.file_util import copy_file
 
 #user_file = './test/users.txt'
 #snippet_file = './test/snippets.txt'
@@ -22,7 +20,7 @@ snippet_file = 'snippets.txt'
 ip_port = "tcp://127.0.0.1:5555"
 
 class Test(unittest.TestCase):
-
+    
     def setUp(self):
         if os.path.isfile(user_file):
             os.remove(user_file)
@@ -111,6 +109,30 @@ class Test(unittest.TestCase):
         self.assertTrue(snippet_name + '2' in embedded_record, 'checking to make sure the name is present')
         self.assertTrue(snippet_desc + '2' in embedded_record, 'checking to make sure the name is present')
         self.assertTrue(snippet_code + '2' in embedded_record, 'checking to make sure the name is present')
+        
+    def test_BA_AddingADuplicateSnippet(self):
+        snippet_name = 'test_snippet'
+        snippet_desc = 'test_desc'
+        snippet_code = 'test_code'
+        snippet_tags = ['test1', 'test2']
+        
+        message = {constants.MSG_ID: constants.COMMAND_ADD,
+                   constants.MSG_USER_NAME: constants.USR_ADMIN,
+                   constants.MSG_NAME: snippet_name,
+                   constants.MSG_DESC: snippet_desc,
+                   constants.MSG_CODE: snippet_code,
+                   constants.MSG_TAGS: snippet_tags}
+        
+        json_message = json.dumps(message)
+        self._socket.send_string(json_message)
+        json_response = self._socket.recv_string()
+        response = json.loads(json_response)
+        self.assertTrue(response[constants.RESPONSE] == constants.SUCCESS)
+        
+        self._socket.send_string(json_message)
+        json_response = self._socket.recv_string()
+        response = json.loads(json_response)
+        self.assertTrue(response[constants.RESPONSE] == constants.SNIPPET_EXISTS)
         
     def test_C_AddingNewUserToServer(self):
         new_user = 'David'
@@ -247,4 +269,22 @@ class Test(unittest.TestCase):
         json_response = self._socket.recv_string()
         response = json.loads(json_response)
         self.assertTrue(response[constants.RESPONSE] == constants.INVALID_USER)
+        
+    def test_H_AttemptACommandWithMissingKey(self):
+        snippet_name = 'test_snippet'
+        snippet_code = 'test_code'
+        snippet_tags = ['test1', 'test2']
+        
+        message = {constants.MSG_ID: constants.COMMAND_UPDATE,
+                   constants.MSG_USER_NAME: constants.USR_ADMIN,
+                   constants.MSG_NAME: snippet_name,
+                   constants.MSG_CODE: snippet_code,
+                   constants.MSG_TAGS: snippet_tags}
+        
+        json_message = json.dumps(message)
+        self._socket.send_string(json_message)
+        json_response = self._socket.recv_string()
+        response = json.loads(json_response)
+        self.assertTrue(response[constants.RESPONSE] == "missing_key: 'missing_key: description'")
+        
         
