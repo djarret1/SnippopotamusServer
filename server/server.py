@@ -6,8 +6,14 @@ from model import constants
 from model.code_snippet import Code_Snippet
 from model.code_snippet import Code_Snippet_Encoder
 
+'''
+Server for the Snippopotamus Rex application
+'''
 class Server:
     
+    '''
+    
+    '''
     def __init__(self, ip_port='tcp://127.0.0.1:5555', users_file='../server/users.txt', snippets_file='../server/snippets.txt'):
         self._users = set()
         self._code_snippets = {}

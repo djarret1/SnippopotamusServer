@@ -14,13 +14,13 @@ import json
 
 
 user_file = 'users.txt'
-snippet_file = 'test/snippets.txt'
+snippet_file = 'snippets.txt'
 ip_port = "tcp://127.0.0.1:5555"
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        with open('test/snippets.txt', 'w') as output_file:
+        with open('snippets.txt', 'w') as output_file:
             output_file.write('admin,test,test,test,test,needs_approval\n' +
                               'admin,test1,test1,test1,test1,needs_approval\n' + 
                               'admin,Bubble,Sort,code,test1,tag2,needs_approval\n')
