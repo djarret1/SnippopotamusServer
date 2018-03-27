@@ -11,10 +11,7 @@ import os
 import zmq
 import time
 import json
-from distutils.file_util import copy_file
 
-#user_file = './test/users.txt'
-#snippet_file = './test/snippets.txt'
 user_file = 'users.txt'
 snippet_file = 'snippets.txt'
 ip_port = "tcp://127.0.0.1:5555"
@@ -26,7 +23,7 @@ class Test(unittest.TestCase):
             os.remove(user_file)
         if os.path.isfile(snippet_file):
             os.remove(snippet_file)
-         
+        
         Thread(target=self.runServer).start()
         time.sleep(1)
          
@@ -287,4 +284,35 @@ class Test(unittest.TestCase):
         response = json.loads(json_response)
         self.assertTrue(response[constants.RESPONSE] == "missing_key: 'missing_key: description'")
         
+    def test_I_AttemptACommandWithMissingId(self):
+        snippet_name = 'test_snippet'
+        snippet_code = 'test_code'
+        snippet_tags = ['test1', 'test2']
         
+        message = {constants.MSG_USER_NAME: constants.USR_ADMIN,
+                   constants.MSG_NAME: snippet_name,
+                   constants.MSG_CODE: snippet_code,
+                   constants.MSG_TAGS: snippet_tags}
+        
+        json_message = json.dumps(message)
+        self._socket.send_string(json_message)
+        json_response = self._socket.recv_string()
+        response = json.loads(json_response)
+        self.assertTrue(response[constants.RESPONSE] == "missing_key: 'id'")
+        
+    def test_J_AddingASnippetToServerWithIncompleteInformation(self):
+        snippet_name = 'test_snippet'
+        snippet_desc = 'test_desc'
+        snippet_tags = ['test1', 'test2']
+        
+        message = {constants.MSG_ID: constants.COMMAND_ADD,
+                   constants.MSG_USER_NAME: constants.USR_ADMIN,
+                   constants.MSG_NAME: snippet_name,
+                   constants.MSG_DESC: snippet_desc,
+                   constants.MSG_TAGS: snippet_tags}
+        
+        json_message = json.dumps(message)
+        self._socket.send_string(json_message)
+        json_response = self._socket.recv_string()
+        response = json.loads(json_response)
+        self.assertTrue(response[constants.RESPONSE] == "missing_key: 'missing_key: code'")

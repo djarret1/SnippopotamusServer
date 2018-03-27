@@ -65,12 +65,8 @@ class Server:
             output_line += tag + ','
         output_line = output_line.rstrip(',')
                
-        try:
-            with open(self._snippet_file, 'a') as outputFile:
-                outputFile.write(output_line + '\n')
-        except FileNotFoundError:
-            with open(self._snippet_file, 'w') as outputFile:
-                outputFile.write(output_line + '\n')
+        with open(self._snippet_file, 'a') as outputFile:
+            outputFile.write(output_line + '\n')
     
     def store_all_snippets(self):
         os.remove(self._snippet_file)
