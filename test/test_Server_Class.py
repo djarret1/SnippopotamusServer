@@ -15,8 +15,10 @@ from shutil import copyfile
 from email import message
 from model.constants import COMMAND_DUMP
 
-user_file = './test/users.txt'
-snippet_file = './test/snippets.txt'
+#user_file = './test/users.txt'
+#snippet_file = './test/snippets.txt'
+user_file = 'users.txt'
+snippet_file = 'snippets.txt'
 ip_port = "tcp://127.0.0.1:5555"
 
 class Test(unittest.TestCase):
@@ -225,6 +227,24 @@ class Test(unittest.TestCase):
         self._socket.send_string(json_message)
         json_response = self._socket.recv_string()
         response = json.loads(json_response)
-        print(response)
         self.assertTrue(response[constants.RESPONSE] == 'unknown_id: do_stuff')
+        
+    def test_G_AttemptACommandWithInvalidUserName(self):
+        snippet_name = 'test_snippet'
+        snippet_desc = 'test_desc'
+        snippet_code = 'test_code'
+        snippet_tags = ['test1', 'test2']
+        
+        message = {constants.MSG_ID: constants.COMMAND_UPDATE,
+                   constants.MSG_USER_NAME: 'boy george',
+                   constants.MSG_NAME: snippet_name,
+                   constants.MSG_DESC: snippet_desc,
+                   constants.MSG_CODE: snippet_code,
+                   constants.MSG_TAGS: snippet_tags}
+        
+        json_message = json.dumps(message)
+        self._socket.send_string(json_message)
+        json_response = self._socket.recv_string()
+        response = json.loads(json_response)
+        self.assertTrue(response[constants.RESPONSE] == constants.INVALID_USER)
         
