@@ -1,3 +1,0 @@
-admin,Bubble Sort,Basic Sort,//code,beginner,basic,needs_approval
-admin,Merge Sort,Intermediate Sort,//code,intermediate,needs_approval
-admin,Red Black Tree,Super Handy,//code,must_know,super_handy,needs_approval

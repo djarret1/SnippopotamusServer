@@ -114,10 +114,6 @@ class Server:
                 return self.add_snippet(message)
             if message[constants.MSG_ID] == constants.COMMAND_NEW_USER:
                 return self.add_user(message)
-            if message[constants.MSG_ID] == constants.COMMAND_TAG_SNIPPET:
-                return self.tag_snippet(message)
-            if message[constants.MSG_ID] == constants.COMMAND_UNTAG_SNIPPET:
-                return self.untag_snippet(message)
             if message[constants.MSG_ID] == constants.COMMAND_UPDATE:
                 return self.update_snippet(message)
             if message[constants.MSG_ID] == constants.COMMAND_TERMINATE:
@@ -162,34 +158,6 @@ class Server:
         if message[constants.MSG_USER_NAME] in self._users:
             return True
         return False
-    
-    def tag_snippet(self, message):
-        try:
-            tag = message[constants.NEW_TAG]
-            user_name = message[constants.MSG_USER_NAME]
-            snippet_name = message[constants.MSG_NAME]
-            snippet_handle = user_name + snippet_name
-            code_snippet = self._code_snippets[snippet_handle]
-            code_snippet.add_tag(tag)
-            self._code_snippets[snippet_handle] = code_snippet
-            self.store_all_snippets()
-            return {constants.RESPONSE: constants.SUCCESS}
-        except KeyError:
-            return {constants.RESPONSE: constants.SNIPPET_DOESNT_EXIT}
-        
-    def untag_snippet(self, message):
-        try:
-            tag = message[constants.TAG_TO_DELETE]
-            user_name = message[constants.MSG_USER_NAME]
-            snippet_name = message[constants.MSG_NAME]
-            snippet_handle = user_name + snippet_name
-            code_snippet = self._code_snippets[snippet_handle]
-            code_snippet.remove_tag(tag)
-            self._code_snippets[snippet_handle] = code_snippet
-            self.store_all_snippets()
-            return {constants.RESPONSE: constants.SUCCESS}
-        except KeyError:
-            return {constants.RESPONSE: constants.SNIPPET_DOESNT_EXIT}
         
     def dump_all_snippets(self):
         result = {}

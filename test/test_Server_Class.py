@@ -11,6 +11,9 @@ import os
 import zmq
 import time
 import json
+from shutil import copyfile
+from email import message
+from model.constants import COMMAND_DUMP
 
 user_file = './test/users.txt'
 snippet_file = './test/snippets.txt'
@@ -37,8 +40,8 @@ class Test(unittest.TestCase):
         json_message = json.dumps(message) 
         self._socket.send_string(json_message)
 
-    def runServer(self):
-        return Server(ip_port, users_file=user_file, snippets_file=snippet_file).main_loop()
+    def runServer(self, ip=ip_port):
+        return Server(ip, users_file=user_file, snippets_file=snippet_file).main_loop()
     
     def test_A_AddingASnippetToAnEmptyServer(self):
         snippet_name = 'test_snippet'
@@ -205,5 +208,3 @@ class Test(unittest.TestCase):
         response = json.loads(json_response)
         self.assertTrue(response[constants.RESPONSE] == constants.SNIPPET_DOESNT_EXIT)
         
-    def test_F_ReadInAnExistingSnippetFile(self):
-        pass
