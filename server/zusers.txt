@@ -1,3 +1,0 @@
-jdk600
-test_dude
-newguy

@@ -6,35 +6,34 @@ from model import constants
 from model.code_snippet import Code_Snippet
 from model.code_snippet import Code_Snippet_Encoder
 
-user_file = '../server/users.txt'
-snippet_file = '../server/snippets.txt'
-ip_port = "tcp://127.0.0.1:5555"
-
 class Server:
     
-    def __init__(self):
+    def __init__(self, ip_port='tcp://127.0.0.1:5555', users_file='../server/users.txt', snippets_file='../server/snippets.txt'):
         self._users = set()
         self._code_snippets = {}
         self._context = zmq.Context()
         self._socket = self._context.socket(zmq.REP)
         self._socket.bind(ip_port)
         
+        self._user_file = users_file
+        self._snippet_file = snippets_file
+        
         self.load_users()
         self.load_all_snippets()
 
     def load_users(self):
         try:
-            with open(user_file) as inputFile:
+            with open(self._user_file) as inputFile:
                 for user in inputFile:
                     self._users.add(user.strip())
         except FileNotFoundError:
-            with open(user_file, 'w') as outputFile:
+            with open(self._user_file, 'w') as outputFile:
                 outputFile.write(constants.USR_ADMIN + '\n')
             self.load_users()
 
     def load_all_snippets(self):
         try:
-            with open(snippet_file) as inputFile:
+            with open(self._snippet_file) as inputFile:
                 for line in inputFile:
                     loaded_snippet = self.load_snippet(line)
                     snippet_handle = loaded_snippet.get_user_name() + loaded_snippet.get_name()
@@ -67,14 +66,14 @@ class Server:
         output_line = output_line.rstrip(',')
                
         try:
-            with open(snippet_file, 'a') as outputFile:
+            with open(self._snippet_file, 'a') as outputFile:
                 outputFile.write(output_line + '\n')
         except FileNotFoundError:
-            with open(snippet_file, 'w') as outputFile:
+            with open(self._snippet_file, 'w') as outputFile:
                 outputFile.write(output_line + '\n')
     
     def store_all_snippets(self):
-        os.remove(snippet_file)
+        os.remove(self._snippet_file)
         for k, v in self._code_snippets.items():
             self.store_snippet(v)
     
@@ -140,7 +139,7 @@ class Server:
         if message[constants.MSG_USER_NAME] in self._users:
             return {constants.RESPONSE: constants.USER_EXISTS}
         self._users.add(message[constants.MSG_USER_NAME])
-        with open(user_file, 'a') as output_file:
+        with open(self._user_file, 'a') as output_file:
             output_file.write(message[constants.MSG_USER_NAME] + '\n')
             return {constants.RESPONSE: constants.SUCCESS}
 
@@ -182,7 +181,12 @@ class Server:
             return {constants.RESPONSE: constants.SNIPPET_DOESNT_EXIT}
         
     def dump_all_snippets(self):
-        all_snippets = json.dumps(self._code_snippets, cls=Code_Snippet_Encoder)
+        result = {}
+        count = 0
+        for k, v in self._code_snippets.items():
+            result[count] = v
+            count = count + 1
+        all_snippets = json.dumps(result, cls=Code_Snippet_Encoder)
         return {constants.RESPONSE: all_snippets}
 
 def runServer():

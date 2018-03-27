@@ -41,7 +41,7 @@ def runClient():
     json_response = socket.recv_string()
     response = json.loads(json_response)
     
-    print(response)
+    print(response[constants.RESPONSE])
     
     time.sleep(0.5)
     message = {constants.MSG_ID: constants.COMMAND_TERMINATE, constants.MSG_USER_NAME: user_Id}
