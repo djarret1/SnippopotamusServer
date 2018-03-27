@@ -1,11 +1,38 @@
 '''
 Created on Mar 24, 2018
 
-@author: jdk60
+@author: David Jarrett
 '''
-MSG_USER_NAME = 'user_name'
-MSG_ID = 'id'
 
+'''
+Messages sent to the server are sent in the form of a dictionary.
+
+---------Every message sent to the server must include:
+ a MSG_ID key, followed by a value representing the command.
+ a MSG_USER_NAME key, with a valid user-name value.
+ 
+ The COMMAND_ADD adds a code snippet to the server (duplicates will be rejected)
+ This requires the aforementioned data, as well as:
+ MSG_NAME: the name of the code snippet
+ MSG_DESC: its description
+ MSG_CODE: the code stored in the snippet
+ MSG_TAGS: a list of tags for the snippet
+ 
+ The COMMAND_DUMP requests a full data dump from the server.
+ MSG_ID: COMMAND_DUMP
+ This data is in the form of a string with each snippet delimited by ascending numeric values.
+ 
+ The COMMAND_NEW_USER adds a new user to the system.
+ MSG_USER_NAME: the username to add (duplicates rejected)
+ 
+ The COMMAND_UPDATE will update an existing snippet. It requires all of the
+ same information that would be required if you were adding a new snippet.
+ 
+ COMMAND_TERMINATE kills the server.  
+
+'''
+MSG_ID = 'id'
+MSG_USER_NAME = 'user_name'
 MSG_NAME = 'name'
 MSG_DESC = 'description'
 MSG_CODE = 'code'

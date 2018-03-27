@@ -8,11 +8,16 @@ from model.code_snippet import Code_Snippet_Encoder
 
 '''
 Server for the Snippopotamus Rex application
+@author: David Jarrett
 '''
 class Server:
     
     '''
+    Initialize the server.
     
+    @param ip_port The ip and port that the server should run on
+    @param users_file The location of the file containing valid usernames
+    @param snippets_file The location of the file containing stored code snippet data
     '''
     def __init__(self, ip_port='tcp://127.0.0.1:5555', users_file='../server/users.txt', snippets_file='../server/snippets.txt'):
         self._users = set()
@@ -79,6 +84,13 @@ class Server:
         for k, v in self._code_snippets.items():
             self.store_snippet(v)
     
+    '''
+    Starts the main processing loop of the server. Waits for incoming commands and processes them, in turn.
+    Can only be terminated by sending the TERMINATE command to the server.
+    
+    @preconditions: None
+    @postconditions: Any changes due to processing commands will be reflected.
+    '''    
     def main_loop(self):
         result = ''
         while result != constants.COMMAND_TERMINATE:
@@ -170,6 +182,11 @@ class Server:
         all_snippets = json.dumps(result, cls=Code_Snippet_Encoder)
         return {constants.RESPONSE: all_snippets}
 
+'''
+Starts the server on the main thread.
+@preconditions: None
+@postconditions: Server will be running on main thread.
+'''
 def runServer():
     server = Server()
     server.main_loop()
