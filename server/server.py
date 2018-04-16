@@ -97,6 +97,7 @@ class Server:
             #  Wait for next request from client
             print("waiting for message...")
             json_message = self._socket.recv_string()
+            #print('********' + json_message + '*********')
             message = json.loads(json_message)
             try:
                 print("Received request: %s" % message[constants.MSG_ID])
@@ -174,13 +175,20 @@ class Server:
         return False
         
     def dump_all_snippets(self):
-        result = {}
-        count = 0
-        for k, v in self._code_snippets.items():
-            result[count] = v
-            count = count + 1
-        all_snippets = json.dumps(result, cls=Code_Snippet_Encoder)
-        return {constants.RESPONSE: all_snippets}
+        file_string = ''
+        with open('snippets.txt', 'r') as snippet_file:
+            for line in snippet_file:
+                file_string += line
+            
+        return {constants.RESPONSE: file_string}
+                        
+#         result = {}
+#         count = 0
+#         for k, v in self._code_snippets.items():
+#             result[count] = v
+#             count = count + 1
+#         all_snippets = json.dumps(result, cls=Code_Snippet_Encoder)
+#         return {constants.RESPONSE: all_snippets}
 
 '''
 Starts the server on the main thread.

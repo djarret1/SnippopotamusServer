@@ -1,3 +1,4 @@
 admin,test,test,test,test,needs_approval
 admin,test1,test1,test1,test1,needs_approval
 admin,Bubble,Sort,code,test1,tag2,needs_approval
+admin,Quick Sort,Fast Sort,{do stuff},tag2,needs_approval
