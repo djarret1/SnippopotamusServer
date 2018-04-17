@@ -1,4 +1,6 @@
 admin,test,test,test,test,needs_approval
-admin,test1,test1,test1,test1,needs_approval
-admin,Bubble,Sort,code,test1,tag2,needs_approval
-admin,Quick Sort,Fast Sort,{do stuff},tag2,needs_approval
+admin,test1,test1,test1,test1
+admin,Bubble,Sort,code
+admin,Quick Sort,A fast sort.,Fancy Codez,needs_approval
+admin,Slug Sort,Makes bubble sort look super-duper.,Grate Codez,WTF
+admin,Test Case,Test Case Description,Test Case Code,needs_approval

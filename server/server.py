@@ -157,7 +157,7 @@ class Server:
             return {constants.RESPONSE: constants.SUCCESS}
 
     def update_snippet(self, message):
-        new_snippet = Code_Snippet(message)
+        new_snippet = Code_Snippet(message, False)
         snippet_handle = new_snippet.get_user_name() + new_snippet.get_name() 
         if (snippet_handle) not in self._code_snippets.keys():
             return {constants.RESPONSE: constants.SNIPPET_DOESNT_EXIT}
