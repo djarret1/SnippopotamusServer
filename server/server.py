@@ -127,6 +127,8 @@ class Server:
                 return self.dump_all_snippets()
             if message[constants.MSG_ID] == constants.COMMAND_ADD:
                 return self.add_snippet(message)
+            if message[constants.MSG_ID] == constants.COMMAND_DELETE:
+                return self.delete_snippet(message)
             if message[constants.MSG_ID] == constants.COMMAND_NEW_USER:
                 return self.add_user(message)
             if message[constants.MSG_ID] == constants.COMMAND_UPDATE:
@@ -162,6 +164,15 @@ class Server:
         if (snippet_handle) not in self._code_snippets.keys():
             return {constants.RESPONSE: constants.SNIPPET_DOESNT_EXIT}
         self._code_snippets[snippet_handle] = new_snippet
+        self.store_all_snippets()
+        return {constants.RESPONSE: constants.SUCCESS}
+    
+    def delete_snippet(self, message):
+        new_snippet = Code_Snippet(message, False)
+        snippet_handle = new_snippet.get_user_name() + new_snippet.get_name() 
+        if (snippet_handle) not in self._code_snippets.keys():
+            return {constants.RESPONSE: constants.SNIPPET_DOESNT_EXIT}
+        del self._code_snippets[snippet_handle]
         self.store_all_snippets()
         return {constants.RESPONSE: constants.SUCCESS}
     
