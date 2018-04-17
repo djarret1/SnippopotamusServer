@@ -52,6 +52,8 @@ class Server:
         except FileNotFoundError:
             #use empty _users dictionary
             pass
+        except IndexError:
+            return
     
     def load_snippet(self, field_string):
         fields = field_string.strip().split(',')
@@ -129,6 +131,8 @@ class Server:
                 return self.add_snippet(message)
             if message[constants.MSG_ID] == constants.COMMAND_DELETE:
                 return self.delete_snippet(message)
+            if message[constants.MSG_ID] == constants.COMMAND_DELETE_ALL:
+                return self.delete_all_snippets()
             if message[constants.MSG_ID] == constants.COMMAND_NEW_USER:
                 return self.add_user(message)
             if message[constants.MSG_ID] == constants.COMMAND_UPDATE:
@@ -174,6 +178,11 @@ class Server:
             return {constants.RESPONSE: constants.SNIPPET_DOESNT_EXIT}
         del self._code_snippets[snippet_handle]
         self.store_all_snippets()
+        return {constants.RESPONSE: constants.SUCCESS}
+    
+    def delete_all_snippets(self):
+        open('snippets.txt', 'w').close()
+        self._code_snippets = {}
         return {constants.RESPONSE: constants.SUCCESS}
     
     def send_response(self, text):

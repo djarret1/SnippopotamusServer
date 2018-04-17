@@ -59,6 +59,7 @@ SNIPPET_DOESNT_EXIT = 'snippet_doesnt_exist'
 
 COMMAND_ADD = 'add'
 COMMAND_DELETE = 'delete'
+COMMAND_DELETE_ALL = 'delete_all'
 COMMAND_DUMP = 'dump'
 COMMAND_NEW_USER = 'new_user'
 COMMAND_TERMINATE = 'terminate'
