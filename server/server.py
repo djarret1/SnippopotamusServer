@@ -161,6 +161,15 @@ class Server:
         with open(self._user_file, 'a') as output_file:
             output_file.write(message[constants.MSG_USER_NAME] + '\n')
             return {constants.RESPONSE: constants.SUCCESS}
+        
+    def delete_user(self, message):
+        if message[constants.MSG_USER_NAME] not in self._users:
+            return {constants.RESPONSE: constants.INVALID_USER}
+        self._users.remove(message[constants.MSG_USER_NAME])
+        with open(self._user_file, 'w') as output_file:
+            for user in self._users:
+                output_file.write(user + '\n')
+        return {constants.RESPONSE: constants.SUCCESS}
 
     def update_snippet(self, message):
         new_snippet = Code_Snippet(message, False)
