@@ -50,6 +50,6 @@ class Test(unittest.TestCase):
         json_response = self._socket.recv_string()
         response = json.loads(json_response)
         
-        self.assertTrue('"test"' in response[constants.RESPONSE])
-        self.assertTrue('"test1"' in response[constants.RESPONSE])
-        self.assertTrue('"Bubble"' in response[constants.RESPONSE])
+        self.assertTrue('test' in response[constants.RESPONSE])
+        self.assertTrue('test1' in response[constants.RESPONSE])
+        self.assertTrue('Bubble' in response[constants.RESPONSE])

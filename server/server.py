@@ -126,7 +126,7 @@ class Server:
     def dispatch_message(self, message):
         try:
             if message[constants.MSG_ID] == constants.COMMAND_DUMP:
-                return self.dump_all_snippets()
+                return self.dump_all_snippets(message)
             if message[constants.MSG_ID] == constants.COMMAND_ADD:
                 return self.add_snippet(message)
             if message[constants.MSG_ID] == constants.COMMAND_DELETE:
@@ -194,11 +194,15 @@ class Server:
             return True
         return False
         
-    def dump_all_snippets(self):
+    def dump_all_snippets(self, message):
         file_string = ''
         with open('snippets.txt', 'r') as snippet_file:
             for line in snippet_file:
-                file_string += line
+                message[constants.MSG_USER_NAME]
+                if message[constants.MSG_USER_NAME] != constants.USR_ADMIN and 'needs_approval' not in line:
+                    file_string += line
+                elif message[constants.MSG_USER_NAME] == constants.USR_ADMIN:
+                    file_string += line
             
         return {constants.RESPONSE: file_string}
                         
