@@ -133,6 +133,8 @@ class Server:
                 return self.delete_snippet(message)
             if message[constants.MSG_ID] == constants.COMMAND_DELETE_ALL:
                 return self.delete_all_snippets()
+            if message[constants.MSG_ID] == constants.COMMAND_DELETE_USER:
+                return self.delete_user(message)
             if message[constants.MSG_ID] == constants.COMMAND_NEW_USER:
                 return self.add_user(message)
             if message[constants.MSG_ID] == constants.COMMAND_UPDATE:

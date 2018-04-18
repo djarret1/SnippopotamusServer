@@ -1,3 +1,4 @@
-admin,Basic Test,Basic Test	,<html dir="ltr"><head></head><body contenteditable="true"><p>Hello there.</p></body></html>,needs_approval
-admin,Another Test,Another test of things.	,<html dir="ltr"><head></head><body contenteditable="true"><p>This is a t<font size="5">est with </font>some HTML tags <i><font color="#ffcc99" size="7">and stuff</font></i>.</p></body></html>,needs_approval
-admin,Test Snippet,A test.,<html dir="ltr"><head></head><body contenteditable="true"><p>Test <font color="#661a33" size="5"><b>Stuff with HTML</b></font> and stuff.</p></body></html>,needs_approval,needs_approval
+admin,Basic Test,Basic Test	 And Stuff,<html dir="ltr"><head></head><body contenteditable="true"><p>Hello there.</p></body></html>
+admin,Test Snippet,A test.,<html dir="ltr"><head></head><body contenteditable="true"><p>Test <font color="#661a33" size="5"><b>Stuff with HTML</b></font> and stuff.</p></body></html>
+admin,Another Test,Another test of things.	,<html dir="ltr"><head></head><body contenteditable="true"><p>This is a t<font size="5">est with </font>some HTML tags <i><font color="#ffcc99" size="7">and stuff</font></i>.</p></body></html>
+admin,TEST SNIP,TEST TEST TEST,<html dir="ltr"><head></head><body contenteditable="true"><p>Test Code</p></body></html>,needs_approval
